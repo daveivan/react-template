@@ -2,16 +2,21 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const glob = require('glob');
 
 const paths = {
 	DIST: path.resolve(__dirname, 'dist'),
 	SRC: path.resolve(__dirname, 'src'),
-	JS: path.resolve(__dirname, 'src/js')
+	APP: path.resolve(__dirname, 'src/app')
 }
 
 //Webpack configuration
 module.exports = {
-	entry: path.join(paths.JS, 'app.js'),
+	entry: [
+		path.join(paths.APP, 'app.js'),
+		...glob.sync(path.join(paths.SRC, 'scss/*.scss')),
+		...glob.sync(path.join(paths.APP, '**/*.scss')),
+	],
 	output: {
 		path: paths.DIST,
 		filename: 'app.bundle.js'
@@ -40,9 +45,10 @@ module.exports = {
 			// Files will get handled by css loader and then passed to the extract text plugin
 			// which will write it to the file we defined above
 			{
-				test: /\.css$/,
+				test: /\.(scss)$/,
 				loader: ExtractTextPlugin.extract({
-					use: 'css-loader'
+					fallback: 'style-loader', 
+					use: 'css-loader!sass-loader'
 				})
 			},
 			//Image loader

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import '../css/style.css';
+import Test from './components/Test/test.component';
+
 import exampleAsset from '../assets/react.png';
 
 export default class Hello extends Component {
@@ -10,6 +11,8 @@ export default class Hello extends Component {
 			<div>
 				<p>Hello, react!</p>
 				<img src={exampleAsset} alt="Example image" width={100} height={100} />
+
+				<Test />
 			</div>
 		)
 	}
